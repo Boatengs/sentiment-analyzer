@@ -1,0 +1,5 @@
+gradio
+transformers
+torch
+plotly
+huggingface_hub
