@@ -1,4 +1,4 @@
-# 🎬 Movie Review Sentiment Analyzer
+# Movie Review Sentiment Analyzer
 
 Fine-tuned DistilBERT model for binary sentiment classification on movie reviews.
 Trained on 25,000 IMDb reviews with 91.2% accuracy.
@@ -9,13 +9,13 @@ Trained on 25,000 IMDb reviews with 91.2% accuracy.
 
 ---
 
-## 🚀 Live Demo
+## Live Demo
 
-👉 **[Try it here](https://huggingface.co/spaces/samboateng190/sentiment-analyzer-app)**
+ **[Try it here](https://huggingface.co/spaces/samboateng190/sentiment-analyzer-app)**
 
 ---
 
-## 📊 Results
+##  Results
 
 | Model | Accuracy | F1 Score |
 |-------|----------|----------|
@@ -29,12 +29,12 @@ Trained on 25,000 IMDb reviews with 91.2% accuracy.
 
 ---
 
-## 🏗️ Architecture
+##  Architecture
 
 
 ---
 
-## ⚡ Quick Start
+##  Quick Start
 
 ```bash
 git clone https://github.com/Boatengs/sentiment-analyzer.git
@@ -57,10 +57,10 @@ print(classifier("This movie was absolutely fantastic!"))
 
 ---
 
-## 📁 Project Structure
+##  Project Structure
 ---
 
-## 🔍 Key Technical Decisions
+##  Key Technical Decisions
 
 **Why DistilBERT over BERT?**
 DistilBERT is 40% smaller and 60% faster than BERT while retaining 97% of its performance. On an M3 Mac with shared MPS memory, full BERT caused OOM errors — DistilBERT trained successfully on CPU with comparable accuracy.
@@ -73,7 +73,7 @@ Apple M3's unified memory architecture allocates a fixed pool (~9GB) shared betw
 
 ---
 
-## ⚠️ Known Limitations
+##  Known Limitations
 
 - **Sarcasm:** "Truly groundbreaking cinema" predicted as 99.7% POSITIVE
 - **Double negatives:** "I will not advise anyone to watch this" predicted as POSITIVE
@@ -82,7 +82,7 @@ Apple M3's unified memory architecture allocates a fixed pool (~9GB) shared betw
 
 ---
 
-## 🧠 Key Learnings
+##  Key Learnings
 
 - Fine-tuning a pretrained transformer achieves strong results with minimal data compared to training from scratch
 - Hardware constraints drive architectural decisions as much as accuracy targets
@@ -90,7 +90,7 @@ Apple M3's unified memory architecture allocates a fixed pool (~9GB) shared betw
 
 ---
 
-## 🛠️ Training Details
+##  Training Details
 
 | Parameter | Value |
 |-----------|-------|
@@ -105,7 +105,7 @@ Apple M3's unified memory architecture allocates a fixed pool (~9GB) shared betw
 
 ---
 
-## 🔗 Links
+##  Links
 
 - [Live Demo](https://huggingface.co/spaces/samboateng190/sentiment-analyzer-app)
 - [Model on HuggingFace Hub](https://huggingface.co/samboateng190/distilbert-imdb-sentiment)
