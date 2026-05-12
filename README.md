@@ -3,15 +3,15 @@
 Fine-tuned DistilBERT model for binary sentiment classification on movie reviews.
 Trained on 25,000 IMDb reviews with 91.2% accuracy.
 
-[![Live Demo](https://img.shields.io/badge/🤗%20Live%20Demo-HuggingFace%20Spaces-blue)](https://huggingface.co/spaces/samboateng190/sentiment-analyzer-app)
-[![Model](https://img.shields.io/badge/��%20Model-HuggingFace%20Hub-yellow)](https://huggingface.co/samboateng190/distilbert-imdb-sentiment)
+[![Live Demo](https://img.shields.io/badge/🤗%20Live%20Demo-HuggingFace%20Spaces-blue)](https://huggingface.co/spaces/samurvivor-07/sentiment-analyzer-app)
+[![Model](https://img.shields.io/badge/��%20Model-HuggingFace%20Hub-yellow)](https://huggingface.co/samurvivor-07/distilbert-imdb-sentiment)
 [![Python](https://img.shields.io/badge/Python-3.12-green)](https://python.org)
 
 ---
 
 ## Live Demo
 
- **[Try it here](https://huggingface.co/spaces/samboateng190/sentiment-analyzer-app)**
+ **[Try it here](https://huggingface.co/spaces/samurvivor-07/sentiment-analyzer-app)**
 
 ---
 
@@ -50,7 +50,7 @@ from transformers import pipeline
 
 classifier = pipeline(
     "text-classification",
-    model="samboateng190/distilbert-imdb-sentiment"
+    model="samurvivor-07/distilbert-imdb-sentiment"
 )
 print(classifier("This movie was absolutely fantastic!"))
 ```
@@ -107,7 +107,7 @@ Apple M3's unified memory architecture allocates a fixed pool (~9GB) shared betw
 
 ##  Links
 
-- [Live Demo](https://huggingface.co/spaces/samboateng190/sentiment-analyzer-app)
-- [Model on HuggingFace Hub](https://huggingface.co/samboateng190/distilbert-imdb-sentiment)
+- [Live Demo](https://huggingface.co/spaces/samurvivor-07/sentiment-analyzer-app)
+- [Model on HuggingFace Hub](https://huggingface.co/samurvivor-07/distilbert-imdb-sentiment)
 - [My Portfolio](#)
 - [LinkedIn](#)
