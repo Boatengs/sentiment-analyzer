@@ -1,0 +1,18 @@
+name: probe models and data
+on:
+  push:
+    branches: [v2]
+    paths: [".github/workflows/probe.yml", "probe/**"]
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.11"}
+      - run: |
+          pip install -q torch --index-url https://download.pytorch.org/whl/cpu
+          pip install -q transformers datasets huggingface_hub pandas sentencepiece protobuf tiktoken
+          nproc
+      - run: python probe/probe.py
