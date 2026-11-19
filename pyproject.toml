@@ -3,7 +3,7 @@ name = "senti"
 version = "2.0.0"
 description = "Benchmark of sentiment models on fresh, multilingual, neutral aware test data"
 requires-python = ">=3.11"
-dependencies = ["numpy", "pandas", "pyarrow", "scikit-learn", "matplotlib", "torch", "transformers>=4.48", "huggingface_hub"]
+dependencies = ["numpy", "pandas", "pyarrow", "scikit-learn", "matplotlib", "torch", "transformers>=4.48", "huggingface_hub", "sentencepiece", "protobuf", "tiktoken"]
 
 [project.optional-dependencies]
 dev = ["pytest", "ruff"]
