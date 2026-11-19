@@ -91,3 +91,17 @@ def test_tfidf_model_outputs_three_columns(toy_texts):
     p = models.TfidfModel().fit(texts, labels).predict(texts)
     assert p.shape == (len(texts), 3) and np.allclose(p.sum(1), 1) and (p[:, NEU] == 0).all()
     assert np.mean((p[:, POS] >= 0.5) == (labels == 1)) > 0.9
+
+
+def test_translate_reviews_keeps_title_and_body_apart():
+    from senti import translate
+
+    texts = ["Great box\n\nLoved it. Would buy again!", "Meh", "Broken\n\nArrived cracked.\nNo reply from seller."]
+    out = translate.translate_reviews(texts, lambda xs: [x.upper() for x in xs])
+    assert out == ["GREAT BOX\n\nLOVED IT. WOULD BUY AGAIN!", "MEH", "BROKEN\n\nARRIVED CRACKED. NO REPLY FROM SELLER."]
+
+
+def test_overlap_records_sources():
+    coll = overlap.collection_digests(["first text that is long enough", "second text that is long enough"], [0, 2])
+    df = pd.DataFrame({"text": ["first text that is long enough", "second text that is long enough", "unseen"]})
+    assert overlap.seen_sources(df, coll).tolist() == [1, 4, 0]

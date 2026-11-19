@@ -21,6 +21,47 @@ jobs:
           pip install -q torch --index-url https://download.pytorch.org/whl/cpu
           pip install -q -e .
       - run: python -m senti.data data
+      - uses: actions/upload-artifact@v4
+        with: {name: base-data, path: data, retention-days: 90}
+  translate:
+    needs: data
+    runs-on: ubuntu-latest
+    timeout-minutes: 355
+    strategy:
+      fail-fast: false
+      matrix:
+        lang: [ar, de, es, fr, hi, it, pt, ja, zh]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.11"}
+      - run: |
+          pip install -q torch --index-url https://download.pytorch.org/whl/cpu
+          pip install -q -e .
+      - uses: actions/download-artifact@v4
+        with: {name: base-data, path: data}
+      - run: python -m senti.translate data ${{ matrix.lang }} mt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mt-${{ matrix.lang }}
+          path: mt
+          retention-days: 90
+  prepare:
+    needs: translate
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.11"}
+      - run: |
+          pip install -q torch --index-url https://download.pytorch.org/whl/cpu
+          pip install -q -e .
+      - uses: actions/download-artifact@v4
+        with: {name: base-data, path: data}
+      - uses: actions/download-artifact@v4
+        with: {pattern: mt-*, path: mt, merge-multiple: true}
+      - run: python -m senti.translate merge data mt
       - run: python -m senti.overlap data data
       - uses: actions/upload-artifact@v4
         with: {name: bench-data, path: data, retention-days: 90}
@@ -79,7 +120,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         with: {name: distilbert-v2, path: models/distilbert_v2, overwrite: true, retention-days: 90}
   predict:
-    needs: data
+    needs: prepare
     runs-on: ubuntu-latest
     timeout-minutes: 355
     strategy:
@@ -105,7 +146,7 @@ jobs:
           path: preds
           retention-days: 90
   predict_v2:
-    needs: [data, train3]
+    needs: [prepare, train3]
     runs-on: ubuntu-latest
     timeout-minutes: 355
     steps:
@@ -123,7 +164,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         with: {name: preds-distilbert_v2, path: preds, retention-days: 90}
   speed:
-    needs: [data, train3]
+    needs: [prepare, train3]
     runs-on: ubuntu-latest
     timeout-minutes: 120
     steps:
