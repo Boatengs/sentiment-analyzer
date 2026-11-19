@@ -27,9 +27,17 @@ jobs:
           pip install -q torch --index-url https://download.pytorch.org/whl/cpu
           pip install -q -e .
       - uses: actions/download-artifact@v4
-        with: {name: bench-data, path: data, run-id: ${{ inputs.run_id }}, github-token: "${{ github.token }}"}
+        with:
+          name: bench-data
+          path: data
+          run-id: ${{ inputs.run_id }}
+          github-token: "${{ github.token }}"
       - uses: actions/download-artifact@v4
-        with: {name: distilbert-v2, path: models/distilbert_v2, run-id: ${{ inputs.run_id }}, github-token: "${{ github.token }}"}
+        with:
+          name: distilbert-v2
+          path: models/distilbert_v2
+          run-id: ${{ inputs.run_id }}
+          github-token: "${{ github.token }}"
       - run: |
           EXTRA=""; LOCAL=""
           case "${{ matrix.model }}" in tfidf_lr|distilbert_v1|distilbert_v2) EXTRA="--extra data/imdb_full.parquet";; esac
@@ -51,12 +59,23 @@ jobs:
           pip install -q torch --index-url https://download.pytorch.org/whl/cpu
           pip install -q -e .
       - uses: actions/download-artifact@v4
-        with: {name: bench-data, path: data, run-id: ${{ inputs.run_id }}, github-token: "${{ github.token }}"}
+        with:
+          name: bench-data
+          path: data
+          run-id: ${{ inputs.run_id }}
+          github-token: "${{ github.token }}"
       - uses: actions/download-artifact@v4
-        with: {name: distilbert-v2, path: models/distilbert_v2, run-id: ${{ inputs.run_id }}, github-token: "${{ github.token }}"}
+        with:
+          name: distilbert-v2
+          path: models/distilbert_v2
+          run-id: ${{ inputs.run_id }}
+          github-token: "${{ github.token }}"
       - run: nproc && python -m senti.speed data preds models/distilbert_v2/best
       - uses: actions/upload-artifact@v4
-        with: {name: speed, path: preds/speed.json, retention-days: 90}
+        with:
+          name: speed
+          path: preds/speed.json
+          retention-days: 90
   report:
     needs: [predict, speed]
     runs-on: ubuntu-latest
@@ -69,15 +88,33 @@ jobs:
           pip install -q torch --index-url https://download.pytorch.org/whl/cpu
           pip install -q -e .
       - uses: actions/download-artifact@v4
-        with: {name: bench-data, path: data, run-id: ${{ inputs.run_id }}, github-token: "${{ github.token }}"}
+        with:
+          name: bench-data
+          path: data
+          run-id: ${{ inputs.run_id }}
+          github-token: "${{ github.token }}"
       - uses: actions/download-artifact@v4
-        with: {name: distilbert-v2, path: models/distilbert_v2, run-id: ${{ inputs.run_id }}, github-token: "${{ github.token }}"}
+        with:
+          name: distilbert-v2
+          path: models/distilbert_v2
+          run-id: ${{ inputs.run_id }}
+          github-token: "${{ github.token }}"
       - uses: actions/download-artifact@v4
-        with: {pattern: preds-*, path: preds, run-id: ${{ inputs.run_id }}, github-token: "${{ github.token }}", merge-multiple: true}
+        with:
+          pattern: preds-*
+          path: preds
+          run-id: ${{ inputs.run_id }}
+          github-token: "${{ github.token }}"
+          merge-multiple: true
       - uses: actions/download-artifact@v4
-        with: {pattern: part-*, path: preds, merge-multiple: true}
+        with:
+          pattern: part-*
+          path: preds
+          merge-multiple: true
       - uses: actions/download-artifact@v4
-        with: {name: speed, path: preds}
+        with:
+          name: speed
+          path: preds
       - run: |
           python -c "from pathlib import Path; from senti.predict import merge_shards; print(merge_shards(Path('preds')))"
           ls preds
