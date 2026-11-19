@@ -7,3 +7,8 @@ models/
 data/
 .DS_Store
 EOF
+data/
+preds/
+models/
+*.egg-info/
+__pycache__/

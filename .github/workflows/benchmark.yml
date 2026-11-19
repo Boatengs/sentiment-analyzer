@@ -1,0 +1,176 @@
+name: benchmark
+# Builds the test samples, retrains DistilBERT with a clean validation split, runs every model on
+# every sample, times them on one machine, and commits the report. Training saves its state and
+# continues in the next stage if a slow runner hits the time limit.
+on:
+  workflow_dispatch:
+  push:
+    branches: [v2]
+    paths: [".github/workflows/benchmark.yml"]
+permissions:
+  contents: write
+jobs:
+  data:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.11"}
+      - run: |
+          pip install -q torch --index-url https://download.pytorch.org/whl/cpu
+          pip install -q -e .
+      - run: python -m senti.data data
+      - run: python -m senti.overlap data data
+      - uses: actions/upload-artifact@v4
+        with: {name: bench-data, path: data, retention-days: 90}
+  train1:
+    runs-on: ubuntu-latest
+    timeout-minutes: 355
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.11"}
+      - run: |
+          pip install -q torch --index-url https://download.pytorch.org/whl/cpu
+          pip install -q -e .
+      - name: Train, or continue from the saved state
+        run: |
+          if [ -f models/distilbert_v2/train.json ]; then echo "already finished"; exit 0; fi
+          python -m senti.train --out models/distilbert_v2 --budget-minutes 330
+      - uses: actions/upload-artifact@v4
+        with: {name: distilbert-v2, path: models/distilbert_v2, overwrite: true, retention-days: 90}
+  train2:
+    needs: train1
+    runs-on: ubuntu-latest
+    timeout-minutes: 355
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.11"}
+      - run: |
+          pip install -q torch --index-url https://download.pytorch.org/whl/cpu
+          pip install -q -e .
+      - uses: actions/download-artifact@v4
+        with: {name: distilbert-v2, path: models/distilbert_v2}
+      - name: Train, or continue from the saved state
+        run: |
+          if [ -f models/distilbert_v2/train.json ]; then echo "already finished"; exit 0; fi
+          python -m senti.train --out models/distilbert_v2 --budget-minutes 330
+      - uses: actions/upload-artifact@v4
+        with: {name: distilbert-v2, path: models/distilbert_v2, overwrite: true, retention-days: 90}
+  train3:
+    needs: train2
+    runs-on: ubuntu-latest
+    timeout-minutes: 355
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.11"}
+      - run: |
+          pip install -q torch --index-url https://download.pytorch.org/whl/cpu
+          pip install -q -e .
+      - uses: actions/download-artifact@v4
+        with: {name: distilbert-v2, path: models/distilbert_v2}
+      - name: Train, or continue from the saved state
+        run: |
+          if [ -f models/distilbert_v2/train.json ]; then echo "already finished"; exit 0; fi
+          python -m senti.train --out models/distilbert_v2 --budget-minutes 330
+      - uses: actions/upload-artifact@v4
+        with: {name: distilbert-v2, path: models/distilbert_v2, overwrite: true, retention-days: 90}
+  predict:
+    needs: data
+    runs-on: ubuntu-latest
+    timeout-minutes: 355
+    strategy:
+      fail-fast: false
+      matrix:
+        model: [tfidf_lr, distilbert_v1, distilbert_sst2, siebert, cardiff_en, cardiff_xlmt, nlptown, lxyuan, clapai, tabularisai]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.11"}
+      - run: |
+          pip install -q torch --index-url https://download.pytorch.org/whl/cpu
+          pip install -q -e .
+      - uses: actions/download-artifact@v4
+        with: {name: bench-data, path: data}
+      - run: |
+          EXTRA=""
+          case "${{ matrix.model }}" in tfidf_lr|distilbert_v1) EXTRA="--extra data/imdb_full.parquet";; esac
+          python -m senti.predict --model ${{ matrix.model }} --data data --out preds $EXTRA
+      - uses: actions/upload-artifact@v4
+        with:
+          name: preds-${{ matrix.model }}
+          path: preds
+          retention-days: 90
+  predict_v2:
+    needs: [data, train3]
+    runs-on: ubuntu-latest
+    timeout-minutes: 355
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.11"}
+      - run: |
+          pip install -q torch --index-url https://download.pytorch.org/whl/cpu
+          pip install -q -e .
+      - uses: actions/download-artifact@v4
+        with: {name: bench-data, path: data}
+      - uses: actions/download-artifact@v4
+        with: {name: distilbert-v2, path: models/distilbert_v2}
+      - run: python -m senti.predict --model distilbert_v2 --local-path models/distilbert_v2/best --data data --out preds --extra data/imdb_full.parquet
+      - uses: actions/upload-artifact@v4
+        with: {name: preds-distilbert_v2, path: preds, retention-days: 90}
+  speed:
+    needs: [data, train3]
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.11"}
+      - run: |
+          pip install -q torch --index-url https://download.pytorch.org/whl/cpu
+          pip install -q -e .
+      - uses: actions/download-artifact@v4
+        with: {name: bench-data, path: data}
+      - uses: actions/download-artifact@v4
+        with: {name: distilbert-v2, path: models/distilbert_v2}
+      - run: nproc && python -m senti.speed data preds models/distilbert_v2/best
+      - uses: actions/upload-artifact@v4
+        with: {name: speed, path: preds/speed.json, retention-days: 90}
+  report:
+    needs: [predict, predict_v2, speed]
+    if: always() && needs.predict_v2.result == 'success' && needs.speed.result == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.11"}
+      - run: |
+          pip install -q torch --index-url https://download.pytorch.org/whl/cpu
+          pip install -q -e .
+      - uses: actions/download-artifact@v4
+        with: {name: bench-data, path: data}
+      - uses: actions/download-artifact@v4
+        with: {pattern: preds-*, path: preds, merge-multiple: true}
+      - uses: actions/download-artifact@v4
+        with: {name: speed, path: preds}
+      - uses: actions/download-artifact@v4
+        with: {name: distilbert-v2, path: models/distilbert_v2}
+      - run: |
+          ls preds
+          python -m senti.report --data data --preds preds --out results --v2 models/distilbert_v2 --speed preds/speed.json
+          python -c "import pandas as pd; pd.read_parquet('data/samples.parquet').drop(columns=['text']).to_csv('results/sample_ids.csv', index=False)"
+          cp data/data_stats.json data/overlap.json results/
+          cp models/distilbert_v2/train.json results/distilbert_v2_train.json
+      - name: Commit results
+        run: |
+          git config user.name "Sam Boateng"
+          git config user.email "32736261+Boatengs@users.noreply.github.com"
+          git add results
+          git diff --cached --quiet || git commit -m "Version 2 benchmark results"
+          git pull --rebase
+          git push
