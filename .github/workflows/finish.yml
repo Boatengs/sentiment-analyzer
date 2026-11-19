@@ -1,0 +1,95 @@
+name: finish benchmark
+# Reuses the data, trained model and finished predictions of a benchmark run, reruns the models
+# named in `models` split into 4 parallel shards (one job per shard), times every model on one
+# machine, and commits the report.
+on:
+  workflow_dispatch:
+    inputs:
+      run_id: {description: "benchmark run to reuse", required: true}
+      models: {description: "JSON list of models to rerun", required: true, default: '["cardiff_xlmt"]'}
+permissions:
+  contents: write
+  actions: read
+jobs:
+  predict:
+    runs-on: ubuntu-latest
+    timeout-minutes: 355
+    strategy:
+      fail-fast: false
+      matrix:
+        model: ${{ fromJSON(inputs.models) }}
+        shard: [0, 1, 2, 3]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.11"}
+      - run: |
+          pip install -q torch --index-url https://download.pytorch.org/whl/cpu
+          pip install -q -e .
+      - uses: actions/download-artifact@v4
+        with: {name: bench-data, path: data, run-id: ${{ inputs.run_id }}, github-token: "${{ github.token }}"}
+      - uses: actions/download-artifact@v4
+        with: {name: distilbert-v2, path: models/distilbert_v2, run-id: ${{ inputs.run_id }}, github-token: "${{ github.token }}"}
+      - run: |
+          EXTRA=""; LOCAL=""
+          case "${{ matrix.model }}" in tfidf_lr|distilbert_v1|distilbert_v2) EXTRA="--extra data/imdb_full.parquet";; esac
+          [ "${{ matrix.model }}" = distilbert_v2 ] && LOCAL="--local-path models/distilbert_v2/best"
+          python -m senti.predict --model ${{ matrix.model }} --data data --out preds --shard ${{ matrix.shard }} --n-shards 4 $EXTRA $LOCAL
+      - uses: actions/upload-artifact@v4
+        with:
+          name: part-${{ matrix.model }}-${{ matrix.shard }}
+          path: preds
+          retention-days: 90
+  speed:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.11"}
+      - run: |
+          pip install -q torch --index-url https://download.pytorch.org/whl/cpu
+          pip install -q -e .
+      - uses: actions/download-artifact@v4
+        with: {name: bench-data, path: data, run-id: ${{ inputs.run_id }}, github-token: "${{ github.token }}"}
+      - uses: actions/download-artifact@v4
+        with: {name: distilbert-v2, path: models/distilbert_v2, run-id: ${{ inputs.run_id }}, github-token: "${{ github.token }}"}
+      - run: nproc && python -m senti.speed data preds models/distilbert_v2/best
+      - uses: actions/upload-artifact@v4
+        with: {name: speed, path: preds/speed.json, retention-days: 90}
+  report:
+    needs: [predict, speed]
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.11"}
+      - run: |
+          pip install -q torch --index-url https://download.pytorch.org/whl/cpu
+          pip install -q -e .
+      - uses: actions/download-artifact@v4
+        with: {name: bench-data, path: data, run-id: ${{ inputs.run_id }}, github-token: "${{ github.token }}"}
+      - uses: actions/download-artifact@v4
+        with: {name: distilbert-v2, path: models/distilbert_v2, run-id: ${{ inputs.run_id }}, github-token: "${{ github.token }}"}
+      - uses: actions/download-artifact@v4
+        with: {pattern: preds-*, path: preds, run-id: ${{ inputs.run_id }}, github-token: "${{ github.token }}", merge-multiple: true}
+      - uses: actions/download-artifact@v4
+        with: {pattern: part-*, path: preds, merge-multiple: true}
+      - uses: actions/download-artifact@v4
+        with: {name: speed, path: preds}
+      - run: |
+          python -c "from pathlib import Path; from senti.predict import merge_shards; print(merge_shards(Path('preds')))"
+          ls preds
+          python -m senti.report --data data --preds preds --out results --v2 models/distilbert_v2 --speed preds/speed.json
+          python -c "import pandas as pd; pd.read_parquet('data/samples.parquet').drop(columns=['text']).to_csv('results/sample_ids.csv', index=False)"
+          cp data/data_stats.json data/overlap.json results/
+          cp models/distilbert_v2/train.json results/distilbert_v2_train.json
+      - name: Commit results
+        run: |
+          git config user.name "Sam Boateng"
+          git config user.email "32736261+Boatengs@users.noreply.github.com"
+          git add results
+          git diff --cached --quiet || git commit -m "Version 2 benchmark results"
+          git pull --rebase
+          git push

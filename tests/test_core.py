@@ -105,3 +105,18 @@ def test_overlap_records_sources():
     coll = overlap.collection_digests(["first text that is long enough", "second text that is long enough"], [0, 2])
     df = pd.DataFrame({"text": ["first text that is long enough", "second text that is long enough", "unseen"]})
     assert overlap.seen_sources(df, coll).tolist() == [1, 4, 0]
+
+
+def test_shards_cover_every_row_once(tmp_path):
+    from senti import predict
+
+    df = pd.DataFrame({"id": [f"r{i}" for i in range(10)]})
+    parts = [predict.shard_rows(df, i, 3) for i in range(3)]
+    assert sorted(pd.concat(parts)["id"]) == sorted(df["id"])
+    for i, part in enumerate(parts):
+        part.assign(p_neg=0.0, p_neu=0.0, p_pos=1.0).to_parquet(tmp_path / f"m.part{i}of3.parquet")
+    assert predict.merge_shards(tmp_path) == ["m"]
+    assert len(pd.read_parquet(tmp_path / "m.parquet")) == 10
+    (tmp_path / "m.part2of3.parquet").unlink()
+    with pytest.raises(ValueError):
+        predict.merge_shards(tmp_path)
