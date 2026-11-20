@@ -1,0 +1,672 @@
+{
+ "amazon23_pool": {
+  "reviews_2022_on": 90895,
+  "by_rating": {
+   "1": 15324,
+   "2": 4292,
+   "3": 5552,
+   "4": 7433,
+   "5": 58294
+  }
+ },
+ "rows": [
+  {
+   "set": "amazon23",
+   "lang": "en",
+   "split": "test",
+   "label": 0,
+   "n": 300
+  },
+  {
+   "set": "amazon23",
+   "lang": "en",
+   "split": "test",
+   "label": 1,
+   "n": 300
+  },
+  {
+   "set": "amazon23",
+   "lang": "en",
+   "split": "test",
+   "label": 2,
+   "n": 300
+  },
+  {
+   "set": "amazon23",
+   "lang": "en",
+   "split": "val",
+   "label": 0,
+   "n": 100
+  },
+  {
+   "set": "amazon23",
+   "lang": "en",
+   "split": "val",
+   "label": 1,
+   "n": 100
+  },
+  {
+   "set": "amazon23",
+   "lang": "en",
+   "split": "val",
+   "label": 2,
+   "n": 100
+  },
+  {
+   "set": "amazon_multi",
+   "lang": "de",
+   "split": "test",
+   "label": 0,
+   "n": 300
+  },
+  {
+   "set": "amazon_multi",
+   "lang": "de",
+   "split": "test",
+   "label": 1,
+   "n": 300
+  },
+  {
+   "set": "amazon_multi",
+   "lang": "de",
+   "split": "test",
+   "label": 2,
+   "n": 300
+  },
+  {
+   "set": "amazon_multi",
+   "lang": "de",
+   "split": "val",
+   "label": 0,
+   "n": 100
+  },
+  {
+   "set": "amazon_multi",
+   "lang": "de",
+   "split": "val",
+   "label": 1,
+   "n": 100
+  },
+  {
+   "set": "amazon_multi",
+   "lang": "de",
+   "split": "val",
+   "label": 2,
+   "n": 100
+  },
+  {
+   "set": "amazon_multi",
+   "lang": "en",
+   "split": "test",
+   "label": 0,
+   "n": 300
+  },
+  {
+   "set": "amazon_multi",
+   "lang": "en",
+   "split": "test",
+   "label": 1,
+   "n": 300
+  },
+  {
+   "set": "amazon_multi",
+   "lang": "en",
+   "split": "test",
+   "label": 2,
+   "n": 300
+  },
+  {
+   "set": "amazon_multi",
+   "lang": "en",
+   "split": "val",
+   "label": 0,
+   "n": 100
+  },
+  {
+   "set": "amazon_multi",
+   "lang": "en",
+   "split": "val",
+   "label": 1,
+   "n": 100
+  },
+  {
+   "set": "amazon_multi",
+   "lang": "en",
+   "split": "val",
+   "label": 2,
+   "n": 100
+  },
+  {
+   "set": "amazon_multi",
+   "lang": "es",
+   "split": "test",
+   "label": 0,
+   "n": 300
+  },
+  {
+   "set": "amazon_multi",
+   "lang": "es",
+   "split": "test",
+   "label": 1,
+   "n": 300
+  },
+  {
+   "set": "amazon_multi",
+   "lang": "es",
+   "split": "test",
+   "label": 2,
+   "n": 300
+  },
+  {
+   "set": "amazon_multi",
+   "lang": "es",
+   "split": "val",
+   "label": 0,
+   "n": 100
+  },
+  {
+   "set": "amazon_multi",
+   "lang": "es",
+   "split": "val",
+   "label": 1,
+   "n": 100
+  },
+  {
+   "set": "amazon_multi",
+   "lang": "es",
+   "split": "val",
+   "label": 2,
+   "n": 100
+  },
+  {
+   "set": "amazon_multi",
+   "lang": "fr",
+   "split": "test",
+   "label": 0,
+   "n": 300
+  },
+  {
+   "set": "amazon_multi",
+   "lang": "fr",
+   "split": "test",
+   "label": 1,
+   "n": 300
+  },
+  {
+   "set": "amazon_multi",
+   "lang": "fr",
+   "split": "test",
+   "label": 2,
+   "n": 300
+  },
+  {
+   "set": "amazon_multi",
+   "lang": "fr",
+   "split": "val",
+   "label": 0,
+   "n": 100
+  },
+  {
+   "set": "amazon_multi",
+   "lang": "fr",
+   "split": "val",
+   "label": 1,
+   "n": 100
+  },
+  {
+   "set": "amazon_multi",
+   "lang": "fr",
+   "split": "val",
+   "label": 2,
+   "n": 100
+  },
+  {
+   "set": "amazon_multi",
+   "lang": "ja",
+   "split": "test",
+   "label": 0,
+   "n": 300
+  },
+  {
+   "set": "amazon_multi",
+   "lang": "ja",
+   "split": "test",
+   "label": 1,
+   "n": 300
+  },
+  {
+   "set": "amazon_multi",
+   "lang": "ja",
+   "split": "test",
+   "label": 2,
+   "n": 300
+  },
+  {
+   "set": "amazon_multi",
+   "lang": "ja",
+   "split": "val",
+   "label": 0,
+   "n": 100
+  },
+  {
+   "set": "amazon_multi",
+   "lang": "ja",
+   "split": "val",
+   "label": 1,
+   "n": 100
+  },
+  {
+   "set": "amazon_multi",
+   "lang": "ja",
+   "split": "val",
+   "label": 2,
+   "n": 100
+  },
+  {
+   "set": "amazon_multi",
+   "lang": "zh",
+   "split": "test",
+   "label": 0,
+   "n": 300
+  },
+  {
+   "set": "amazon_multi",
+   "lang": "zh",
+   "split": "test",
+   "label": 1,
+   "n": 300
+  },
+  {
+   "set": "amazon_multi",
+   "lang": "zh",
+   "split": "test",
+   "label": 2,
+   "n": 300
+  },
+  {
+   "set": "amazon_multi",
+   "lang": "zh",
+   "split": "val",
+   "label": 0,
+   "n": 100
+  },
+  {
+   "set": "amazon_multi",
+   "lang": "zh",
+   "split": "val",
+   "label": 1,
+   "n": 100
+  },
+  {
+   "set": "amazon_multi",
+   "lang": "zh",
+   "split": "val",
+   "label": 2,
+   "n": 100
+  },
+  {
+   "set": "imdb",
+   "lang": "en",
+   "split": "test",
+   "label": 0,
+   "n": 300
+  },
+  {
+   "set": "imdb",
+   "lang": "en",
+   "split": "test",
+   "label": 2,
+   "n": 300
+  },
+  {
+   "set": "imdb",
+   "lang": "en",
+   "split": "val",
+   "label": 0,
+   "n": 100
+  },
+  {
+   "set": "imdb",
+   "lang": "en",
+   "split": "val",
+   "label": 2,
+   "n": 100
+  },
+  {
+   "set": "tweets",
+   "lang": "ar",
+   "split": "test",
+   "label": 0,
+   "n": 220
+  },
+  {
+   "set": "tweets",
+   "lang": "ar",
+   "split": "test",
+   "label": 1,
+   "n": 220
+  },
+  {
+   "set": "tweets",
+   "lang": "ar",
+   "split": "test",
+   "label": 2,
+   "n": 220
+  },
+  {
+   "set": "tweets",
+   "lang": "ar",
+   "split": "val",
+   "label": 0,
+   "n": 70
+  },
+  {
+   "set": "tweets",
+   "lang": "ar",
+   "split": "val",
+   "label": 1,
+   "n": 70
+  },
+  {
+   "set": "tweets",
+   "lang": "ar",
+   "split": "val",
+   "label": 2,
+   "n": 70
+  },
+  {
+   "set": "tweets",
+   "lang": "de",
+   "split": "test",
+   "label": 0,
+   "n": 220
+  },
+  {
+   "set": "tweets",
+   "lang": "de",
+   "split": "test",
+   "label": 1,
+   "n": 220
+  },
+  {
+   "set": "tweets",
+   "lang": "de",
+   "split": "test",
+   "label": 2,
+   "n": 220
+  },
+  {
+   "set": "tweets",
+   "lang": "de",
+   "split": "val",
+   "label": 0,
+   "n": 70
+  },
+  {
+   "set": "tweets",
+   "lang": "de",
+   "split": "val",
+   "label": 1,
+   "n": 70
+  },
+  {
+   "set": "tweets",
+   "lang": "de",
+   "split": "val",
+   "label": 2,
+   "n": 70
+  },
+  {
+   "set": "tweets",
+   "lang": "en",
+   "split": "test",
+   "label": 0,
+   "n": 220
+  },
+  {
+   "set": "tweets",
+   "lang": "en",
+   "split": "test",
+   "label": 1,
+   "n": 220
+  },
+  {
+   "set": "tweets",
+   "lang": "en",
+   "split": "test",
+   "label": 2,
+   "n": 220
+  },
+  {
+   "set": "tweets",
+   "lang": "en",
+   "split": "val",
+   "label": 0,
+   "n": 70
+  },
+  {
+   "set": "tweets",
+   "lang": "en",
+   "split": "val",
+   "label": 1,
+   "n": 70
+  },
+  {
+   "set": "tweets",
+   "lang": "en",
+   "split": "val",
+   "label": 2,
+   "n": 70
+  },
+  {
+   "set": "tweets",
+   "lang": "es",
+   "split": "test",
+   "label": 0,
+   "n": 220
+  },
+  {
+   "set": "tweets",
+   "lang": "es",
+   "split": "test",
+   "label": 1,
+   "n": 220
+  },
+  {
+   "set": "tweets",
+   "lang": "es",
+   "split": "test",
+   "label": 2,
+   "n": 220
+  },
+  {
+   "set": "tweets",
+   "lang": "es",
+   "split": "val",
+   "label": 0,
+   "n": 70
+  },
+  {
+   "set": "tweets",
+   "lang": "es",
+   "split": "val",
+   "label": 1,
+   "n": 70
+  },
+  {
+   "set": "tweets",
+   "lang": "es",
+   "split": "val",
+   "label": 2,
+   "n": 70
+  },
+  {
+   "set": "tweets",
+   "lang": "fr",
+   "split": "test",
+   "label": 0,
+   "n": 220
+  },
+  {
+   "set": "tweets",
+   "lang": "fr",
+   "split": "test",
+   "label": 1,
+   "n": 220
+  },
+  {
+   "set": "tweets",
+   "lang": "fr",
+   "split": "test",
+   "label": 2,
+   "n": 220
+  },
+  {
+   "set": "tweets",
+   "lang": "fr",
+   "split": "val",
+   "label": 0,
+   "n": 70
+  },
+  {
+   "set": "tweets",
+   "lang": "fr",
+   "split": "val",
+   "label": 1,
+   "n": 70
+  },
+  {
+   "set": "tweets",
+   "lang": "fr",
+   "split": "val",
+   "label": 2,
+   "n": 70
+  },
+  {
+   "set": "tweets",
+   "lang": "hi",
+   "split": "test",
+   "label": 0,
+   "n": 220
+  },
+  {
+   "set": "tweets",
+   "lang": "hi",
+   "split": "test",
+   "label": 1,
+   "n": 220
+  },
+  {
+   "set": "tweets",
+   "lang": "hi",
+   "split": "test",
+   "label": 2,
+   "n": 220
+  },
+  {
+   "set": "tweets",
+   "lang": "hi",
+   "split": "val",
+   "label": 0,
+   "n": 70
+  },
+  {
+   "set": "tweets",
+   "lang": "hi",
+   "split": "val",
+   "label": 1,
+   "n": 70
+  },
+  {
+   "set": "tweets",
+   "lang": "hi",
+   "split": "val",
+   "label": 2,
+   "n": 70
+  },
+  {
+   "set": "tweets",
+   "lang": "it",
+   "split": "test",
+   "label": 0,
+   "n": 220
+  },
+  {
+   "set": "tweets",
+   "lang": "it",
+   "split": "test",
+   "label": 1,
+   "n": 220
+  },
+  {
+   "set": "tweets",
+   "lang": "it",
+   "split": "test",
+   "label": 2,
+   "n": 220
+  },
+  {
+   "set": "tweets",
+   "lang": "it",
+   "split": "val",
+   "label": 0,
+   "n": 70
+  },
+  {
+   "set": "tweets",
+   "lang": "it",
+   "split": "val",
+   "label": 1,
+   "n": 70
+  },
+  {
+   "set": "tweets",
+   "lang": "it",
+   "split": "val",
+   "label": 2,
+   "n": 70
+  },
+  {
+   "set": "tweets",
+   "lang": "pt",
+   "split": "test",
+   "label": 0,
+   "n": 220
+  },
+  {
+   "set": "tweets",
+   "lang": "pt",
+   "split": "test",
+   "label": 1,
+   "n": 220
+  },
+  {
+   "set": "tweets",
+   "lang": "pt",
+   "split": "test",
+   "label": 2,
+   "n": 220
+  },
+  {
+   "set": "tweets",
+   "lang": "pt",
+   "split": "val",
+   "label": 0,
+   "n": 70
+  },
+  {
+   "set": "tweets",
+   "lang": "pt",
+   "split": "val",
+   "label": 1,
+   "n": 70
+  },
+  {
+   "set": "tweets",
+   "lang": "pt",
+   "split": "val",
+   "label": 2,
+   "n": 70
+  }
+ ]
+}

@@ -1,0 +1,33 @@
+{
+ "base": "distilbert-base-uncased",
+ "recipe": {
+  "epochs": 3,
+  "batch_size": 16,
+  "lr": 2e-05,
+  "weight_decay": 0.01,
+  "max_length": 256,
+  "val_size": 2500,
+  "seed": 42
+ },
+ "history": [
+  {
+   "epoch": 1,
+   "val_accuracy": 0.8984,
+   "minutes": 165.9
+  },
+  {
+   "epoch": 2,
+   "val_accuracy": 0.908,
+   "minutes": 28.7
+  },
+  {
+   "epoch": 3,
+   "val_accuracy": 0.9052,
+   "minutes": 165.1
+  }
+ ],
+ "best_epoch": 2,
+ "best_val_accuracy": 0.908,
+ "n_train": 22500,
+ "n_val": 2500
+}
