@@ -127,7 +127,7 @@ def write_markdown(summary: dict, out: Path) -> None:
         L.append(f"| {k} | " + " | ".join(pct(res[k]["langs"][x]["binary_accuracy"]) for x in langs) + " |")
     L += [
         "",
-        "## Speed on one 4 core CPU runner (same 256 texts, same machine)",
+        f"## Speed on one 4 core CPU runner (same {summary.get('speed', {}).get('n_texts', '')} test texts for every model, same machine)",
         "",
         "| Model | Texts per second | Parameters | Licence |",
         "|---|---|---|---|",
@@ -136,6 +136,20 @@ def write_markdown(summary: dict, out: Path) -> None:
         s = speed.get(k, {})
         p = s.get("params")
         L.append(f"| {k} | {s.get('texts_per_second', '')} | {'' if p is None else f'{p / 1e6:.0f}M'} | {models.MODELS[k].licence} |")
+    unseen = [(k, s) for k in order for s in SETS if "binary_accuracy_unseen_only" in res[k]["sets"].get(s, {})]
+    if unseen:
+        L += [
+            "",
+            "## Accuracy (%) with and without test texts the model may have trained on",
+            "",
+            "clapai: any match in its training collection. lxyuan: matches from tyqiangz/multilingual-sentiments, its training data.",
+            "",
+            "| Model | Set | Test rows | Possibly seen | All rows | Unseen rows only |",
+            "|---|---|---|---|---|---|",
+        ]
+        for k, s in unseen:
+            r = res[k]["sets"][s]
+            L.append(f"| {k} | {s} | {r['n']} | {r['n_possibly_in_training']} | {pct(r['binary_accuracy'])} | {pct(r['binary_accuracy_unseen_only'])} |")
     ov = summary.get("overlap")
     if ov:
         L += ["", "## Test texts found word for word in the clapAI training collection", "", "| Set | Language | Seen | Of |", "|---|---|---|---|"]
@@ -144,7 +158,8 @@ def write_markdown(summary: dict, out: Path) -> None:
         L += [f"| {k} | {v} |" for k, v in ov.get("matches_by_source", {}).items()]
     full = summary.get("imdb_full")
     if full:
-        L += ["", "## Full IMDb test set (25,000 reviews), cut at 0.5", "", "| Model | Accuracy (%) |", "|---|---|"]
+        n = next(iter(full.values()))["n"]
+        L += ["", f"## Full IMDb test set ({n:,} reviews once exact duplicates are removed), cut at 0.5", "", "| Model | Accuracy (%) |", "|---|---|"]
         L += [f"| {k} | {ci(v, 'binary_accuracy')} |" for k, v in full.items()]
     tr = summary.get("distilbert_v2_training")
     if tr:
@@ -183,10 +198,23 @@ def figures(summary: dict, out: Path) -> None:
     plt.close(fig)
     if speed:
         fig, ax = plt.subplots(figsize=(6.5, 4.2))
+        placed: list[tuple[float, float]] = []
         for k in order:
             if k in speed:
-                ax.scatter(speed[k]["texts_per_second"], 100 * res[k]["fresh_binary_accuracy"], color="#3b6fd8")
-                ax.annotate(k, (speed[k]["texts_per_second"], 100 * res[k]["fresh_binary_accuracy"]), fontsize=8, xytext=(4, 3), textcoords="offset points")
+                x, y = speed[k]["texts_per_second"], 100 * res[k]["fresh_binary_accuracy"]
+                ax.scatter(x, y, color="#3b6fd8")
+                # Try above right, below right, then left of the point, and take the first spot no other label is near
+                spots = [((4, 3), "left", 0.5), ((4, -11), "left", -1.4), ((-6, -4), "right", -0.5)]
+
+                def free(spot, x=x, y=y):
+                    _, ha, yshift = spot
+                    lx, ly = np.log10(x) + (0.35 if ha == "left" else -0.35), y + yshift
+                    return all(abs(lx - px) > 0.6 or abs(ly - py) > 1.0 for px, py in placed), (lx, ly)
+
+                offset, ha, _ = next((sp for sp in spots if free(sp)[0]), spots[-1])
+                lx, ly = free((offset, ha, _))[1]
+                ax.annotate(k, (x, y), fontsize=8, xytext=offset, textcoords="offset points", ha=ha)
+                placed.append((lx, ly))
         ax.set_xscale("log")
         ax.set_xlabel("Texts per second on a 4 core CPU (log scale)")
         ax.set_ylabel("Accuracy on fresh reviews (%)")

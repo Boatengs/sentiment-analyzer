@@ -54,7 +54,7 @@ The band [lo, hi] is chosen per model on validation rows only. IMDb has no neutr
 | distilbert_v2 | 87.8 | 50.0 | 49.8 | 50.8 | 50.2 | 50.0 | 51.0 | 49.8 | 51.3 | 50.0 | 49.8 | 89.5 | 50.2 | 51.8 | 50.0 | 50.0 | 91.3 | 48.6 | 54.3 | 80.5 | 53.4 | 57.5 | 58.6 | 56.1 | 44.5 |
 | tfidf_lr | 78.8 | 50.8 | 55.2 | 58.7 | 56.0 | 51.5 | 55.7 | 51.0 | 50.8 | 50.0 | 50.2 | 79.8 | 54.5 | 52.0 | 49.7 | 49.3 | 89.3 | 58.6 | 54.8 | 66.8 | 53.2 | 50.7 | 54.8 | 43.2 | 48.9 |
 
-## Speed on one 4 core CPU runner (same 256 texts, same machine)
+## Speed on one 4 core CPU runner (same 320 test texts for every model, same machine)
 
 | Model | Texts per second | Parameters | Licence |
 |---|---|---|---|
@@ -69,6 +69,20 @@ The band [lo, hi] is chosen per model on validation rows only. IMDb has no neutr
 | distilbert_sst2 | 9.1 | 67M | apache-2.0 |
 | distilbert_v2 | 12.8 | 67M | ours |
 | tfidf_lr | 11381.7 |  | ours |
+
+## Accuracy (%) with and without test texts the model may have trained on
+
+clapai: any match in its training collection. lxyuan: matches from tyqiangz/multilingual-sentiments, its training data.
+
+| Model | Set | Test rows | Possibly seen | All rows | Unseen rows only |
+|---|---|---|---|---|---|
+| clapai | imdb | 600 | 251 | 97.3 | 97.1 |
+| clapai | amazon23 | 900 | 1 | 95.2 | 95.2 |
+| clapai | amazon23_mt | 8100 | 1 | 85.0 | 85.0 |
+| clapai | tweets | 5280 | 4843 | 90.0 | 85.6 |
+| clapai | amazon_multi | 5400 | 4923 | 96.3 | 91.7 |
+| lxyuan | tweets | 5280 | 4424 | 74.1 | 75.9 |
+| lxyuan | amazon_multi | 5400 | 1193 | 81.3 | 80.4 |
 
 ## Test texts found word for word in the clapAI training collection
 
@@ -104,7 +118,7 @@ Every other set and language had no matches.
 | https://www.kaggle.com/datasets/ashishkumarak/chatgpt-reviews-daily-updated | 1 |
 | https://www.kaggle.com/datasets/fahdseddik/arabic-company-reviews | 1 |
 
-## Full IMDb test set (25,000 reviews), cut at 0.5
+## Full IMDb test set (24,801 reviews once exact duplicates are removed), cut at 0.5
 
 | Model | Accuracy (%) |
 |---|---|
