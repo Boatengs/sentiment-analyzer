@@ -1,9 +1,9 @@
-cat > .gitignore << 'EOF'
 venv/
+.env
+.DS_Store
 __pycache__/
 *.pyc
-.env
-models/
+*.egg-info/
 data/
-.DS_Store
-EOF
+preds/
+models/

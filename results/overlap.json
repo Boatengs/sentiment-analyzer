@@ -1,0 +1,169 @@
+{
+ "collection": "clapAI/MultiLingualSentiment",
+ "by_split": {
+  "train": 10781,
+  "validation": 1496,
+  "test": 1497
+ },
+ "matches_by_source": {
+  "https://huggingface.co/datasets/tyqiangz/multilingual-sentiments": 7413,
+  "https://huggingface.co/datasets/mteb/amazon_reviews_multi": 6375,
+  "https://huggingface.co/datasets/iberbench/tass2020_sentiment_analysis": 538,
+  "https://huggingface.co/datasets/scikit-learn/imdb": 334,
+  "https://www.kaggle.com/datasets/bwandowando/grab-app-reviews-from-google-store": 1,
+  "https://www.kaggle.com/datasets/ashishkumarak/chatgpt-reviews-daily-updated": 1,
+  "https://www.kaggle.com/datasets/fahdseddik/arabic-company-reviews": 1
+ },
+ "by_set_lang": [
+  {
+   "set": "amazon23",
+   "lang": "en",
+   "seen": 1,
+   "n": 1200
+  },
+  {
+   "set": "amazon23_mt",
+   "lang": "ar",
+   "seen": 1,
+   "n": 1200
+  },
+  {
+   "set": "amazon23_mt",
+   "lang": "de",
+   "seen": 0,
+   "n": 1200
+  },
+  {
+   "set": "amazon23_mt",
+   "lang": "es",
+   "seen": 0,
+   "n": 1200
+  },
+  {
+   "set": "amazon23_mt",
+   "lang": "fr",
+   "seen": 0,
+   "n": 1200
+  },
+  {
+   "set": "amazon23_mt",
+   "lang": "hi",
+   "seen": 0,
+   "n": 1200
+  },
+  {
+   "set": "amazon23_mt",
+   "lang": "it",
+   "seen": 0,
+   "n": 1200
+  },
+  {
+   "set": "amazon23_mt",
+   "lang": "ja",
+   "seen": 0,
+   "n": 1200
+  },
+  {
+   "set": "amazon23_mt",
+   "lang": "pt",
+   "seen": 0,
+   "n": 1200
+  },
+  {
+   "set": "amazon23_mt",
+   "lang": "zh",
+   "seen": 0,
+   "n": 1200
+  },
+  {
+   "set": "amazon_multi",
+   "lang": "de",
+   "seen": 1183,
+   "n": 1200
+  },
+  {
+   "set": "amazon_multi",
+   "lang": "en",
+   "seen": 811,
+   "n": 1200
+  },
+  {
+   "set": "amazon_multi",
+   "lang": "es",
+   "seen": 1198,
+   "n": 1200
+  },
+  {
+   "set": "amazon_multi",
+   "lang": "fr",
+   "seen": 1191,
+   "n": 1200
+  },
+  {
+   "set": "amazon_multi",
+   "lang": "ja",
+   "seen": 1185,
+   "n": 1200
+  },
+  {
+   "set": "amazon_multi",
+   "lang": "zh",
+   "seen": 1003,
+   "n": 1200
+  },
+  {
+   "set": "imdb",
+   "lang": "en",
+   "seen": 334,
+   "n": 800
+  },
+  {
+   "set": "tweets",
+   "lang": "ar",
+   "seen": 708,
+   "n": 870
+  },
+  {
+   "set": "tweets",
+   "lang": "de",
+   "seen": 807,
+   "n": 870
+  },
+  {
+   "set": "tweets",
+   "lang": "en",
+   "seen": 802,
+   "n": 870
+  },
+  {
+   "set": "tweets",
+   "lang": "es",
+   "seen": 853,
+   "n": 870
+  },
+  {
+   "set": "tweets",
+   "lang": "fr",
+   "seen": 846,
+   "n": 870
+  },
+  {
+   "set": "tweets",
+   "lang": "hi",
+   "seen": 794,
+   "n": 870
+  },
+  {
+   "set": "tweets",
+   "lang": "it",
+   "seen": 821,
+   "n": 870
+  },
+  {
+   "set": "tweets",
+   "lang": "pt",
+   "seen": 735,
+   "n": 870
+  }
+ ]
+}
